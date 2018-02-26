@@ -1,5 +1,4 @@
 <?php
-echo "HOLAAA";
 
 /*
 Entra en el if se realiza las siguientes operaciones, por que se toma
