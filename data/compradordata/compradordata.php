@@ -1,5 +1,5 @@
 <?php
-
+echo "hola 2";
 /*
 Entra en el if se realiza las siguientes operaciones, por que se toma
 la ruta desde el business, y entra en el else si no se realiza el crud por
