@@ -172,7 +172,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 mostrarMensaje("error", "Revise los espacios numéricos");
             }else if(mensajeObtenido === "emptyField"){
                 mostrarMensaje("error", "Complete los datos solicitados");
-            }
+            }else if(mensajeObtenido === "numeroRepetido"){
+                mostrarMensaje("error", "El número de Animal ya existe");
+            }//if-else
         }//if-else
     });
 

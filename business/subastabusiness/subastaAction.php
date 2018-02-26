@@ -55,7 +55,7 @@ include './subastaBusiness.php';
             $subastaBusiness = new subastaBusiness();
 
             $resultado = $subastaBusiness->insertarResubasta($subastaAnimalId, $subastaCompradorId,
-        	$subastaPrecio);
+            $subastaPrecio);
 
             echo "La inserción se realizo adecuadamente";
     } else {
@@ -89,6 +89,46 @@ include './subastaBusiness.php';
    $subastaBusiness = new subastaBusiness();
    $resultado = $subastaBusiness->obtenerVentasPorComprador($compradorid);
 
+}else if (isset($_POST['vistaRegistroSubasta'])) {
+    $subastaBusiness = new SubastaBusiness();
+    $respuesta = $subastaBusiness->obtenerDatosSubastas();
+}else if (isset($_POST['ObtenerResubastasyVentas'])) {
+    $subastaBusiness = new SubastaBusiness();
+    $respuesta = $subastaBusiness->obtenerResubastasYventas();
+
+}else if (isset($_POST['obtenerUnaVenta'])) {
+    $idVenta = $_POST['obtenerUnaVenta'];
+    $subastaBusiness = new SubastaBusiness();
+    $respuesta = $subastaBusiness->obtenerUnaVenta($idVenta);
+}
+else if (isset($_POST['obtenerUnaResubasta'])) {
+    $idSubasta = $_POST['obtenerUnaResubasta'];
+    $subastaBusiness = new SubastaBusiness();
+    $respuesta = $subastaBusiness->obtenerUnaResubasta($idSubasta);
+
+}else if (isset($_POST['actualizar'])) {
+
+    if(isset($_POST['numeroVenta']) || isset($_POST['numeroAnimal']) || isset($_POST['numeroComprador']) || isset($_POST['precio']) || isset($_POST['table'])){
+
+        $subastaNumeroVenta = $_POST['numeroVenta'];
+        $subastaCompradorId = $_POST['numeroComprador'];
+        $subastaPrecio = $_POST['precio'];
+        $subastaAnimalId = $_POST['numeroAnimal'];
+        $table = $_POST['table'];
+
+        if(strlen($subastaCompradorId) > 0 && strlen($subastaAnimalId) > 0 && strlen($subastaPrecio) > 0 && $subastaNumeroVenta > -1 && $table != "default") {
+
+            $subastaBusiness = new subastaBusiness();
+            $resultado = $subastaBusiness->actualizarVenta(new subasta($subastaNumeroVenta, $subastaAnimalId, $subastaCompradorId, $subastaPrecio, 0), $table);
+                
+            echo "La inserción se realizo adecuadamente";
+
+        } else {
+            echo "Error al momento de insertar el dato";
+        }//if si se dejo en blanco
+    }else{
+        echo "No se ha enviado todos los datos";
+    }//if-else
 }
 
 ?>

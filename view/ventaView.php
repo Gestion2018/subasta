@@ -58,12 +58,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div  id="top" class="callbacks_container">
                 <ul class="rslides" id="slider4">
                     <li>
-
                         <div class=" col-md-4 comment-bottom">
-                            <h3>Datos de animal</h3>
+                            <h3>Datos de Animal</h3>
                             <form id="cargarD">
                                 <label for="">Número animal</label>
-                                <input type="number" id="numeroAnimal2" name="numeroAnimal2">
+                                <input type="number" id="numeroAnimal2" name="numeroAnimal2" autofocus>
                                 <!-- <select id="numeroAnimal" name="numeroAnimal" class="pruebaSelect"></select> -->
                             </form>
 
@@ -76,21 +75,68 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <form>
                                     <label for="">Comprador</label>
                                     <!-- <select id="nombreComprador"></select> -->
-                                    <input type="text" id="nombreComprador" name="nombreComprador">
+                                    <input type="text" id="nombreComprador"  name="nombreComprador">
 
                                     <label for="Precio">Precio</label>
 
                                     <input id="price" autocomplete="off" name="price" type="text" class="form-control
                                     required" data-mask="₡"placeholder="₡">
-
+                                    <!--<label for="">Ventas</label>
+                                    <select id="slventas" name="slventas" change> </select>
+                                    <label for="">Resubastas</label>
+                                    <select id="slresubasta" name="slresubastas" change> </select>
                                     <div id="priceMessage"></div>
-                                    <br>
-                                    <input type="button" value="Venta" onclick="registrarAnimal()">
+                                    <br>-->
+                                    <div class="col-md-5 banner-right">
+                                        <input type="button" class="button_subasta" value="Venta" onclick="registrarAnimal()">
+                                    </div>
+                                    <div class="col-md-2 banner-right"></div>
+                                    <div class="col-md-5 banner-right">
+                                        <input type="button" class="button_subasta" value="Resubastar" onclick="registrarReSubasta()">
+                                    </div>
                                     <br><br>
-                                    <input type="button" value="Resubastar" onclick="registrarReSubasta()">
-                                    <br><br>
-                                    <label style="font-size:2em; text-align: center;color:#886741; font-family: 'Baumans', cursive; margin-bottom: 0.5em;">₡</label>
-                                    <span id="registro" style=" font-size:2em; text-align: center;color:#886741; font-family: 'Baumans', cursive; margin-bottom: 0.5em;">0</span>
+                                </form>
+                            </div>
+                        </div>
+                        <br><br>
+                         <div class=" col-md-12 comment-bottom">
+                            <br><br>
+                         </div>
+                        <br><br>
+                         <div class=" col-md-4 comment-bottom">
+                            <h3>Subastas</h3>
+                            <form id="cargarD">
+                                <div>
+                                     <label for="">Subastas</label>
+                                    <select id="subastas" name="subastas"></select>
+                                </div>
+                                <div>
+                                    <label for="">Resubastas</label>
+                                    <select id="resubastas" name="resubastas"></select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-8 banner-right">
+                            <div class="comment-bottom">
+                                <h3>Datos</h3>
+                                <form>
+                                    <input type="text" name="numeroVenta" id="numeroVenta" value="-1">
+                                    <input type="text" name="table" id="table" value="default">
+                                    <label for="">Numero de Animal</label>
+                                    <!-- <select id="nombreComprador"></select> -->
+                                    <input type="text" id="numeroAnimalUpdate"  name="numeroAnimalUpdate">
+
+                                    <label for="">Comprador</label>
+                                    <!-- <select id="nombreComprador"></select> -->
+                                    <input type="text" id="nombreCompradorUpdate"  name="nombreCompradorUpdate">
+
+                                    <label for="Precio">Precio</label>
+
+                                    <input id="priceUpdate" autocomplete="off" name="priceUpdate" type="text" class="form-control
+                                    required" data-mask="₡"placeholder="₡">
+                                    <div>
+                                        <input type="button" class="button_subasta" value="Actualizar" onclick="actualizarRegistro();">
+                                    </div>
                                     <br><br>
                                 </form>
                             </div>
@@ -104,32 +150,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   </div>
 </div>
 <!--header end here-->
-<!-- banner Slider starts Here
-                <script src="js/responsiveslides.min.js"></script>
-             <script>
-                // You can also use "$(window).load(function() {"
-                $(function () {
-                  // Slideshow 4
-                  $("#slider4").responsiveSlides({
-                    auto: true,
-                    pager: true,
-                    speed: 500,
-                    namespace: "callbacks",
-                    before: function () {
-                      $('.events').append("<li>before event fired.</li>");
-                    },
-                    after: function () {
-                      $('.events').append("<li>after event fired.</li>");
-                    }
-                  });
-
-                });
-              </script>
-            //End-slider-script -->
-
-<!--banner strip end here-->
-
 <!--footer start here-->
+<br><br>
 <div class="footer">
     <div class="container">
         <div class="copy-right">
@@ -170,16 +192,60 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     });
 
     $(document).ready(function() {
+
         cargarCompradores();
         cargarAnimales();
-
-        $.post("../business/subastabusiness/subastaAction.php",{'obtenerMontoSubastas': 'obtenerMontoSubastas'}, function(data){
-            $("#registro").html(data);
-        });
-
+        cargarVentasResubastas();
     });
 
-    function cargarCompradores(){ 
+    function cargarVentasResubastas(){
+        $.post("../business/subastabusiness/subastaAction.php",{'ObtenerResubastasyVentas': 'ObtenerResubastasyVentas'}, function(data){
+            var allVentas = JSON.parse(data);
+            asignacion1 = "";
+            asignacion2 = "";
+            for (var i = 1; i < allVentas.Ventas.length; i++) {
+                asignacion1 +="<option value='" + allVentas.Ventas[i].ventaid+"'>"+ allVentas.Ventas[i].ventaanimal+"-"+allVentas.Ventas[i].ventacomprador +"</option>";
+            }//end for
+            $('#subastas').html(asignacion1);
+
+            for (var i = 1; i < allVentas.Resubastas.length; i++) {
+                asignacion2 +="<option value='" + allVentas.Resubastas[i].resubastaanimal+"'>"+ allVentas.Resubastas[i].resubastaanimal+"-"+allVentas.Resubastas[i].resubastacomprador +"</option>";
+            }//end for
+
+            $('#resubastas').html(asignacion2);
+
+
+       });
+    }
+
+    $('#subastas').change(function(){
+        var ventaid = $(this).val();
+        $.post("../business/subastabusiness/subastaAction.php",{'obtenerUnaVenta': ventaid}, function(data){
+            //alert(data);
+          var venta = JSON.parse(data);
+
+          $('#numeroAnimalUpdate').val(venta.venta[0].ventaanimal);
+          $('#nombreCompradorUpdate').val(venta.venta[0].ventacomprador);
+          $('#priceUpdate').val(venta.venta[0].ventaprecio);
+          $('#numeroVenta').val(venta.venta[0].ventaid);
+          $('#table').val("tbventa");
+        });
+    });
+
+    $('#resubastas').change(function(){
+        var resubastaid = $(this).val();
+        $.post("../business/subastabusiness/subastaAction.php",{'obtenerUnaResubasta': resubastaid}, function(data){
+            var resubasta = JSON.parse(data);
+
+            $('#numeroAnimalUpdate').val(resubasta.resubasta[0].resubastaanimal);
+            $('#nombreCompradorUpdate').val(resubasta.resubasta[0].resubastacomprador);
+            $('#priceUpdate').val(resubasta.resubasta[0].resubastaprecio);
+            $('#numeroVenta').val(resubasta.resubasta[0].resubastaid);
+            $('#table').val("tbresubasta");
+        });
+    });
+
+    function cargarCompradores(){
         $.post("../business/compradorbusiness/compradorAction.php",{'obtenerCompradores': 'obtenerCompradores'}, function(data){
             var compradores = JSON.parse(data);
             var items = [];
@@ -192,7 +258,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         });
     }
 
-    function cargarAnimales(){ 
+    function cargarAnimales(){
         $.post("../business/animalbusiness/animalAction.php",{'obtenerNumerosAnimales': 'obtenerNumerosAnimales'}, function(data){
             var animales = JSON.parse(data);
             var items = [];
@@ -259,6 +325,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             })
             .done(function(resp){
                 /*Convierte el objeto codificado en un objeto json*/
+                
                 var datos = JSON.parse(resp);
                 var asignacion = "";
 
@@ -317,7 +384,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         precio = document.getElementById("price").value;
         comprador = document.getElementById("nombreComprador").value.split(" - ")[0];
         numeroAnimal = document.getElementById("numeroAnimal2").value;
-        
+
         /*Se arma un objeto JSON*/
         var datos;
 
@@ -349,7 +416,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 //$("#numeroAnimal option[value='"+numeroAnimal+"']").remove();
 
                 registro = (parseInt($("#registro").text()) + parseInt($("#price").val()));
-                $("#registro").html(registro); 
+                $("#registro").html(registro);
 
                 $('#numeroAnimal2').val("");
                 $('#price').val("");
@@ -392,7 +459,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         precio = document.getElementById("price").value;
         comprador = document.getElementById("nombreComprador").value.split(" - ")[0];
         numeroAnimal = document.getElementById("numeroAnimal2").value;
-        
+
         /*Se arma un objeto JSON*/
         var datos;
 
@@ -446,7 +513,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 $('#nombreComprador').val("");
 
                 //alert(registro);
-                $("#registro").html(registro); 
+                $("#registro").html(registro);
             }
 
             //$('#submitMessage').html(respuesta);
@@ -482,4 +549,56 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 buttonFocus   : "ok"
         });
     }//reset
+    
+    function validarDatos(){
+
+        numeroAnimal = $("#numeroAnimalUpdate").val().trim();
+        numeroComprador = $("#nombreCompradorUpdate").val().trim();
+        precio = $("#priceUpdate").val().trim();
+
+        if(numeroAnimal.length < 1){
+            mostrarMensaje("error", "Debe indicar el animal");
+            return false;
+        }else if(numeroComprador.length < 1){
+            mostrarMensaje("error", "Debe ingresar el comprador");
+            return false;
+        }else if(precio.length < 1){
+            mostrarMensaje("error", "Debe ingresar un precio");
+            return false;
+        }//if-else
+
+        return true;
+    }//validarDatos
+
+    /*FUNCION PARA ACTUALIZAR EL REGISTRO*/
+    function actualizarRegistro(){
+
+        if(validarDatos()){
+            var parameters = {
+                "actualizar" : 'actualizar',
+                "numeroVenta": $("#numeroVenta").val(),
+                "numeroComprador": $("#nombreCompradorUpdate").val(),
+                "numeroAnimal": $("#numeroAnimalUpdate").val(),
+                "precio": $("#priceUpdate").val(),
+                "table": $("#table").val()
+            };
+
+            $.post("../business/subastabusiness/subastaAction.php",parameters, function(data){
+                if(data == "La inserción se realizo adecuadamente"){
+                    mostrarMensaje("success", data);
+                    $("#numeroVenta").val("-1");
+                    $("#table").val("default");
+                    $("#subastas").val(1);
+                    $("#resubastas").val(1);
+                    $("#numeroAnimalUpdate").val("");
+                    $("#nombreCompradorUpdate").val("");
+                    $("#priceUpdate").val("");
+                }else{
+                    mostrarMensaje("error", data);
+                }//if-else
+            });
+        }else{
+            mostrarMensaje("error", "no paso el validar datos");
+        }
+    }//actualizarRegistro
 </script>

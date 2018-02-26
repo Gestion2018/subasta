@@ -1,3 +1,9 @@
+#paddingVentas{
+    margin-left: 710px;
+}
+
+
+
 /*--
 Author: W3layouts
 Author URL: http://w3layouts.com
@@ -12,7 +18,7 @@ html, body{
   /*font-family: 'Open Sans Condensed', sans-serif;*/
   font-family: serif;
    font-size: 100%;
-   background:#fff; 
+   background:#fff;
 }
 a {
   text-decoration: none;
@@ -144,12 +150,36 @@ span.menu{
   margin-top: 0.5em;
 }
 
+.banner-right input[type="button"]{
+  width: 100%;
+  display: block;
+  position: relative;
+  margin-top: 0.5em;
+
+  padding: 0.5em;
+  font-size: 2em;
+}
+
+.button_subasta{
+    color: #ffffff;
+    background-color: #886741;
+    border-radius: 6px;
+    border: 2px solid #886741;
+    text-align: center;
+}
+
+.button_subasta:hover{
+    color: #000000;
+    background-color: #e5cd68;
+}
+
 .banner-right a{
   width: 100%;
   display: block;
   position: relative;
   margin-top: 0.5em;
 }
+
 /*NUEVO ESTILO INGRESADO*/
 .banner-left p{
   color: #fff;
@@ -360,7 +390,7 @@ span.bann-sli-text {
 }
 .details h4 a:hover{
    text-decoration:none;
-   color:#e5cd68; 
+   color:#e5cd68;
 }
 .details p {
   font-size: 0.9em;
@@ -587,7 +617,7 @@ span.glyphicon.glyphicon-play:hover {
 .ftr-grid input[type="submit"]:hover {
   background: #fff;
   color:#000;
-} 
+}
 .copy-right {
   text-align: center;
   padding: 3em 0em 0em 0em;
@@ -850,7 +880,7 @@ i.glyphicon.glyphicon-comment {
 .page-header h3{
   font-size: 3em;
   color:#000;
-  
+
 }
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
   padding: 8px;
@@ -982,11 +1012,11 @@ h3.typo1 {
 }
 }
 @media(max-width:1280px){
-  
+
 }
 @media(max-width:1024px){
 .banner-left {
-  padding:5.65em 2.5em; 
+  padding:5.65em 2.5em;
 }
 .details h4 {
   font-size: 1.22em;
@@ -1241,7 +1271,7 @@ ul.res li a:hover,ul.res li a.active{
 }
 .comments-top h3, .comment-bottom h3 {
   font-size: 2em;
-} 
+}
 /*--typo--*/
 .page {
   margin: 2em 0;
@@ -1251,7 +1281,7 @@ h3.typo1 {
 }
 h1.grid2 {
   font-size: 2.3em;
-} 
+}
 .contact-bottom input[type="text"] {
   padding: 0.5em;
 }
@@ -1259,12 +1289,12 @@ h1.grid2 {
 @media(max-width:736px){
 .banner-left {
   padding: 3.65em 2.5em;
-} 
+}
 }
 @media(max-width:667px){
 .news-grid h6 {
   width: 51%;
-} 
+}
 .banner-left {
   padding: 2.85em 2.5em;
 }
@@ -1360,7 +1390,7 @@ span.glyphicon.glyphicon-cloud {
 }
 .single {
   padding: 3em 0;
-} 
+}
 /*--typo--*/
 button.btn.btn-lg {
   font-size: 1.1em;
@@ -1376,17 +1406,17 @@ h3.typo1 {
 }
 .page {
   margin: 2em 0;
-} 
+}
 }
 @media(max-width:600px){
 .banner-left {
   padding: 2.5em 2em;
-} 
+}
 }
 @media(max-width:568px){
 .news-grid h6 {
   width: 65%;
-} 
+}
 .banner-left {
   padding: 1em 2em;
 }
@@ -1500,7 +1530,7 @@ span.bann-sli-text {
 }
 /*--typo--*/
 .page-header h3 {
-  font-size: 2em; 
+  font-size: 2em;
 }
 button.btn.btn-lg {
   font-size: 1em;
@@ -1537,7 +1567,7 @@ h3.typo1 {
 }
 .page {
   margin: 2em 0;
-}   
+}
 /*--single--*/
 .single-grid h2 {
   font-size: 1.2em;
@@ -1556,17 +1586,17 @@ h3.typo1 {
 }
 .media-body p {
   font-size: 0.85em;
-} 
+}
 }
 @media(max-width:414px){
 .news-grid h6 {
   width: 80%;
   padding: 1.5em 0em;
-} 
+}
 }
 @media(max-width:384px){
 .news-grid h6 {
-  width: 86%; 
+  width: 86%;
 }
 .banner-left h3 {
   font-size: 1.3em;
@@ -1574,7 +1604,7 @@ h3.typo1 {
 }
 @media(max-width:375px){
 .news-grid h6 {
-  width: 90%; 
+  width: 90%;
 }
 }
 @media(max-width:320px){
@@ -1841,7 +1871,7 @@ h4.media-heading {
 }
 .comments-top {
   padding: 1em 0;
-} 
+}
 /*--typo--*/
 h1#h1-bootstrap-heading {
   font-size: 1.5em;
@@ -1895,7 +1925,7 @@ h3.typo1 {
 }
 .page-header h3 {
   font-size: 1.8em;
-}   
+}
 }
 
 table {

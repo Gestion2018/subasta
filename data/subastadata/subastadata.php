@@ -7,14 +7,16 @@ la ruta desde el business, y entra en el else si no se realiza el crud por
 que se toma la ruta desde el view
 */
 if (isset($_POST['eliminar']) || isset($_POST['actualizar']) || isset($_POST['insertar'])
-|| isset($_POST['obtener']) || isset($_POST['registrarVenta']) || isset($_POST['insertarResubasta']) || isset($_POST['obtenerMontoSubastas'])
-|| isset($_POST['FacturaComprador'])) {
+|| isset($_POST['obtener']) || isset($_POST['registrarVenta']) || isset($_POST['insertarResubasta']) || isset($_POST['obtenerMontoSubastas']) || isset($_POST['FacturaComprador']) || isset($_POST['ObtenerResubastasyVentas']) || isset($_POST['obtenerUnaVenta']) || isset($_POST['vistaRegistroSubasta']) || isset($_POST['obtenerUnaResubasta'])) {
 
-	include_once '../../data/data.php';
-	include '../../domain/subasta/subasta.php';
+    include_once '../../data/data.php';
+    include '../../domain/subasta/subasta.php';
+
 }else {
-	include_once '../data/data.php';
-	include '../domain/subasta/subasta.php';
+
+    include_once '../data/data.php';
+    include '../domain/subasta/subasta.php';
+
 }
 
 
@@ -45,10 +47,11 @@ class SubastaData extends Data {
 
         mysqli_close($conn);
 
+        $this->insertarControl($ventaAnimal, $ventaComprador, $ventaPrecio);
     }//insertarVenta
 
     public function insertarResubasta($resubastaAnimal, $resubastaComprador,
-	$resubastaPrecio) {
+    $resubastaPrecio) {
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
@@ -63,7 +66,7 @@ class SubastaData extends Data {
         }//end if
 
         $queryInsert = "INSERT INTO tbresubasta VALUES (" . $nextId . "," .$resubastaAnimal. ",
-		" .$resubastaComprador. "," .$resubastaPrecio. "," ."'A'" . ");";
+        " .$resubastaComprador. "," .$resubastaPrecio. "," ."'A'" . ");";
 
         $result = mysqli_query($conn, $queryInsert);
 
@@ -73,7 +76,22 @@ class SubastaData extends Data {
         mysqli_query($conn, $queryActualizarAnimal);
 
         mysqli_close($conn);
+
+        $this->insertarControl($resubastaAnimal, $resubastaComprador, $resubastaPrecio);
     }//insertarresubasta
+
+    public function insertarControl($Animal, $Comprador, $Precio) {
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $queryInsert = "INSERT INTO tbsubasta (id_animal, id_comprador, precio) VALUES (" . $Animal . "," . $Comprador . "," . $Precio . ");";
+
+        $result = mysqli_query($conn, $queryInsert);
+
+        mysqli_close($conn);
+
+    }//insertarVenta
 
     public function eliminarVenta($subastaid) {
 
@@ -149,29 +167,76 @@ class SubastaData extends Data {
 
     }//obtenerResubastas
 
+    public function obtenerResubastasYventas() {
+
+                $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+                $conn->set_charset('utf8');
+
+                $querySelect = "SELECT tbventa.ventaid,tbventa.ventaanimal,tbventa.ventacomprador,tbventa.ventaprecio,tbventa.ventaestado FROM tbventa WHERE tbventa.ventaestado <>'B';";
+                 $querySelect2 = "SELECT tbresubasta.resubastaid,tbresubasta.resubastaanimal,
+                 tbresubasta.resubastacomprador,tbresubasta.resubastaprecio,tbresubasta.resubastaestado
+                 FROM tbresubasta WHERE tbresubasta.resubastaestado <>'B';";
+                $result1 = mysqli_query($conn, $querySelect);
+                $result2 = mysqli_query($conn, $querySelect2);
+
+                mysqli_close($conn);
+                $allVentas["Ventas"][] = [];
+                $allVentas["Resubastas"][] = [];
+                while ($row = mysqli_fetch_array($result1)) {
+                        $allVentas["Ventas"][] = $row;
+                }//end while
+
+                while ($row = mysqli_fetch_array($result2)) {
+                        $allVentas["Resubastas"][] = $row;
+                }//end while
+
+                echo json_encode($allVentas);
+
+        }//obtenerResubastas
+
+        public function obtenerUnaVenta($idVenta){
+
+            $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+            $conn->set_charset('utf8');
+            $querySelect = "SELECT * FROM tbventa WHERE ventaid=" . $idVenta. ";";
+            $result1 = mysqli_query($conn, $querySelect);
+            while ($row = mysqli_fetch_array($result1)) {
+                    $venta["venta"][] = $row;
+            }//end while
+            echo json_encode($venta);
+        }
+        public function obtenerUnaResubasta($idResubasta){
+
+            $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+            $conn->set_charset('utf8');
+            $querySelect = "SELECT * FROM tbresubasta WHERE resubastaid=" . $idResubasta. ";";
+            $result1 = mysqli_query($conn, $querySelect);
+            while ($row = mysqli_fetch_array($result1)) {
+                    $resubasta["resubasta"][] = $row;
+            }//end while
+            echo json_encode($resubasta);
+        }
+
 
     public function obtenerMontoSubastas() {
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        //Get the last id
-        $queryGetLastId = "SELECT SUM(ventaprecio) AS ventaprecio  FROM tbventa";
-        $idCont = mysqli_query($conn, $queryGetLastId);
+        //monto acumulado de las subastas realizadas
+        $queryMonto = "SELECT SUM(precio) AS precio  FROM tbsubasta";
+        $idCont = mysqli_query($conn, $queryMonto);
 
         if ($row = mysqli_fetch_row($idCont)) {
             $montoVentas = trim($row[0]);
         }//end if
 
-        //Get the last id
-        $queryResubastas = "SELECT SUM(resubastaprecio) AS resubastaprecio  FROM tbresubasta";
-        $idCont2 = mysqli_query($conn, $queryResubastas);
-
-        if ($row = mysqli_fetch_row($idCont2)) {
-            $montoResubastas = trim($row[0]);
-        }//end if
-
-        $montoTotal = $montoVentas + $montoResubastas;
+        if($montoVentas == ""){
+            $montoTotal = 0;
+        }else{
+            $montoTotal = $montoVentas + 0;
+        }
+        
 
         mysqli_close($conn);
 
@@ -209,6 +274,105 @@ class SubastaData extends Data {
 
             echo json_encode($ventas);
     }//Facturas por
+
+    public function obtenerDatosSubastas() {
+       $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+       $conn->set_charset('utf8');
+
+       $querySelect = "SELECT id, id_animal, id_comprador,
+       precio FROM tbsubasta ORDER BY id DESC LIMIT 4";
+
+       //SELECT * FROM tabla ORDER BY id DESC LIMIT 5
+
+       $result = mysqli_query($conn, $querySelect);
+       mysqli_close($conn);
+
+       $flag = false;
+
+       while ($row = mysqli_fetch_array($result)) {
+           $subastas["Data"][] = $row;
+
+           $flag = true;
+       }//end while
+
+       if ($flag == true) {
+           echo json_encode($subastas);
+       }else {
+           echo "Sin coincidencias";
+       }
+
+   }//obteneranimales
+
+   public function actualizarSubasta($subasta){
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        //Get the last id
+        $queryGetLastId = "SELECT MAX(ventaid) AS ventaid  FROM tbventa";
+        $idCont = mysqli_query($conn, $queryGetLastId);
+        $nextId = 1;
+
+        if ($row = mysqli_fetch_row($idCont)) {
+            $nextId = trim($row[0]) + 1;
+        }//end if
+
+        $queryUpdateState = "UPDATE tbventa SET  ventaestado = " . "'B'". " WHERE ventaid = " . $subasta->getSubastaId() . ";";
+
+        $result = mysqli_query($conn, $queryUpdateState);
+
+        $queryInsert = "INSERT INTO tbventa VALUES (" . $nextId . "," . $subasta->getSubastaAnimal() . "," . $subasta->getSubastaComprador() . "," . $subasta->getSubastaPrecio() . "," ."'A'" . ");";
+
+        $resultInsert = mysqli_query($conn, $queryInsert);
+
+        $queryDelete = "DELETE FROM tbsubasta WHERE ventaanimal = " . $subasta->getSubastaAnimal()." AND ventacomprador= ".$subasta->getSubastaComprador().";";
+
+        $resultDelete = mysqli_query($conn, $queryDelete);
+
+        mysqli_close($conn);
+
+        $this->insertarControl($subasta->getSubastaAnimal(), $subasta->getSubastaComprador(), $subasta->getSubastaPrecio());
+   }//actualizarSubasta
+
+   public function actualizarResubasta($subasta){
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        //Get the last id
+        $queryGetLastId = "SELECT MAX(resubastaid) AS resubastaid  FROM tbresubasta";
+        $idCont = mysqli_query($conn, $queryGetLastId);
+        $nextId = 1;
+
+        if ($row = mysqli_fetch_row($idCont)) {
+            $nextId = trim($row[0]) + 1;
+        }//end if
+
+        $queryUpdateState = "UPDATE tbresubasta SET  resubastaestado = " . "'B'". " WHERE resubastaid = " . $subasta->getSubastaId() . ";";
+
+        $result = mysqli_query($conn, $queryUpdateState);
+
+        $queryInsert = "INSERT INTO tbresubasta VALUES (" . $nextId . "," . $subasta->getSubastaAnimal() . "," . $subasta->getSubastaComprador() . "," . $subasta->getSubastaPrecio() . "," ."'A'" . ");";
+
+        $resultInsert = mysqli_query($conn, $queryInsert);
+
+        $queryDelete = "DELETE FROM tbsubasta WHERE resubastaanimal = " . $subasta->getSubastaAnimal()." AND resubastacomprador= ".$subasta->getSubastaComprador().";";
+
+        $resultDelete = mysqli_query($conn, $queryDelete);
+
+        mysqli_close($conn);
+
+        $this->insertarControl($subasta->getSubastaAnimal(), $subasta->getSubastaComprador(), $subasta->getSubastaPrecio());
+   }//actualizarSubasta
+
+   public function actualizarVenta($subasta, $table) {
+        /*Actualizar el estado de la venta o de la resubasta (Borrado lógico)*/
+        if($table == "tbventa"){
+            $this->actualizarSubasta($subasta);
+        }else if($table == "tbresubasta"){
+            $this->actualizarResubasta($subasta);
+        }//if-else
+    }//insertarVenta
 
 }//end class
 

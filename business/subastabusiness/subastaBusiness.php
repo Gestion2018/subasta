@@ -7,7 +7,7 @@ que se toma la ruta desde el view
 if (isset($_POST['eliminar']) || isset($_POST['insertarVenta']) || isset($_POST['insertarResubasta'])
 || isset($_POST['eliminarSubastaVenta']) || isset($_POST['eliminarSubastaResubasta'])
 || isset($_POST['obtener']) || isset($_POST['registrarVenta']) || isset($_POST['obtenerMontoSubastas'])
-|| isset($_POST['FacturaComprador'])) {
+|| isset($_POST['FacturaComprador']) || isset($_POST['vistaRegistroSubasta']) || isset($_POST['ObtenerResubastasyVentas']) || isset($_POST['obtenerUnaVenta']) || isset($_POST['obtenerUnaResubasta']) || isset($_POST['actualizar'])) {
     include_once '../../data/subastadata/subastadata.php';
 }else {
     include_once '../data/subastadata/subastadata.php';
@@ -21,7 +21,7 @@ class SubastaBusiness {
     }//constructor
 
     public function insertarTBSubastaVenta($subasta) {
-        return $this->compradorData->insertarSubastaVenta($comprador);
+        return $this->compradorData->insertarSubastaVenta($subasta);
     }//InsertarComprador
 
     public function insertarTBSubastaResubasta($subasta) {
@@ -57,9 +57,9 @@ class SubastaBusiness {
     }//obtenerAnimalesComprador
 
     public function insertarResubasta($resubastaAnimal, $resubastaComprador,
-	$resubastaPrecio){
+    $resubastaPrecio){
         return $this->subastaData->insertarResubasta($resubastaAnimal, $resubastaComprador,
-    	$resubastaPrecio);
+        $resubastaPrecio);
     }//obtenerAnimalesComprador
 
     public function obtenerVentasPorComprador($compradorid){
@@ -72,6 +72,26 @@ class SubastaBusiness {
         return $this->subastaData->obtenerMontoSubastas();
     }//insertarVenta
 
+    /*Obtiene los ultimos 4 registros*/
+    public function obtenerDatosSubastas() {
+        return $this->subastaData->obtenerDatosSubastas();
+    }//obtenerDatosActualizar
+
+    public function obtenerResubastasYventas() {
+         return $this->subastaData->obtenerResubastasYventas();
+    }
+
+    public function obtenerUnaVenta($idVenta) {
+         return $this->subastaData->obtenerUnaVenta($idVenta);
+    }
+
+    public function obtenerUnaResubasta($idSubasta) {
+         return $this->subastaData->obtenerUnaResubasta($idSubasta);
+    }
+
+    public function actualizarVenta($subasta, $table) {
+        return $this->subastaData->actualizarVenta($subasta, $table);
+    }//InsertarComprador
 }//class
 
 ?>
