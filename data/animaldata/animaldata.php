@@ -186,7 +186,9 @@ class AnimalData extends Data {
         mysqli_close($conn);
 
         while ($row = mysqli_fetch_array($result)) {
-            $animales["Data"][] = $row;
+            if($row["animalestado"] !== "vendido"){
+                $animales["Data"][] = $row;
+            }//if
         }//end while
 
         echo json_encode($animales);

@@ -439,6 +439,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 $('#txtEstadoAnimal').hide();
                 $('#txtDescripcion').hide();
 
+                cargarAnimales();
                 mostrarMensaje("success", resp);
             }
 
@@ -488,7 +489,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             }else {
                 /*respuesta = "<label id='lblDonador' for='" + resp +"' style='color:green'>"+
                 resp + "</label>";*/
-                mostrarMensaje("success", resp);
 
                 registro = (parseInt($("#registro").text()) + parseInt($("#price").val()));
 
@@ -514,6 +514,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 //alert(registro);
                 $("#registro").html(registro);
+
+                cargarAnimales();
+                mostrarMensaje("success", resp);
             }
 
             //$('#submitMessage').html(respuesta);

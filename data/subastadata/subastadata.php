@@ -22,7 +22,7 @@ if (isset($_POST['eliminar']) || isset($_POST['actualizar']) || isset($_POST['in
 
 class SubastaData extends Data {
 
-	public function insertarVenta($ventaAnimal, $ventaComprador, $subastaPrecio) {
+	public function insertarVenta($ventaAnimal, $ventaComprador, $ventaPrecio) {
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
@@ -36,7 +36,7 @@ class SubastaData extends Data {
             $nextId = trim($row[0]) + 1;
         }//end if
 
-        $queryInsert = "INSERT INTO tbventa VALUES (" . $nextId . "," . $ventaAnimal . "," . $ventaComprador . "," . $subastaPrecio . "," ."'A'" . ");";
+        $queryInsert = "INSERT INTO tbventa VALUES (" . $nextId . "," . $ventaAnimal . "," . $ventaComprador . "," . $ventaPrecio . "," ."'A'" . ");";
 
         $result = mysqli_query($conn, $queryInsert);
 
