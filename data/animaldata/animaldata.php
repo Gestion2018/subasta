@@ -295,6 +295,11 @@ class AnimalData extends Data {
 
    }//obteneranimales
 
+   public function obtenerInfoTermninal () {
+        //return $_SERVER['REMOTE_ADDR'];
+        //return gethostname();
+    }//obtenerInfoTermninal
+
 }//end class
 
 ?>
