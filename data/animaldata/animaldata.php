@@ -42,7 +42,8 @@ class AnimalData extends Data {
             .$animal->getAnimalTipo(). ", "
             .$animal->getAnimalRaza().", " .
             "'".$animal->getAnimalDescripcion() ."'". ", " .
-            "'subasta'". ");";
+            "'subasta',".
+            "'".$this->obtenerInfoTermninal()."'". ");";
 
             $result = mysqli_query($conn, $queryInsert);
             mysqli_close($conn);
@@ -298,6 +299,7 @@ class AnimalData extends Data {
    public function obtenerInfoTermninal () {
         //return $_SERVER['REMOTE_ADDR'];
         //return gethostname();
+        return "";
     }//obtenerInfoTermninal
 
 }//end class
