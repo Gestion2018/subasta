@@ -90,7 +90,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <input id="price" autocomplete="off" name="price" type="text" class="form-control
                                     required" data-mask="₡"placeholder="₡">
                                     <div class="col-md-5 banner-right">
-                                        <input type="button" id="insertarVenta" class="button_subasta" value="Venta" onclick="registrarAnimal()">
+                                        <input type="button" id="insertarVenta" class="button_subasta" value="Vender" onclick="registrarAnimal()">
                                     </div>
                                     <div class="col-md-2 banner-right"></div>
                                     <div class="col-md-5 banner-right">
@@ -335,7 +335,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     function cargarDatos(opcion){
         /*Se valida si el usuario escogió una opción correcta y no la opción
         por defecto "Número"*/
-        if (opcion != 'vacio') {
+        if (opcion != '') {
 
             $.ajax({
               url: '../business/animalbusiness/animalAction.php',
@@ -393,8 +393,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             $('#txtEstadoAnimal').hide();
             $('#txtDescripcion').hide();
 
-            /*Muestra un mensaje de error*/
-            $('#message').show();
             limpiarEspaciosActualizacion();
         }
     }

@@ -813,7 +813,20 @@ h4.media-heading{
   background:none;
   outline:none;
   border: 1px solid #A09F9F;
-  font-size:1em;
+  font-size:1.15em;
+  color:#000000;
+  -webkit-appearance: none;
+}
+
+#numeroAnimal2, #numeroAnimalUpdate{
+  width: 100%;
+  padding: 0.25em;
+  margin: 0.5em 0;
+  background:none;
+  outline:none;
+  text-align: center;
+  border: 1px solid #A09F9F;
+  font-size:2em;
   color:#000000;
   -webkit-appearance: none;
 }
