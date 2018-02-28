@@ -303,7 +303,7 @@ class SubastaData extends Data {
 
    }//obteneranimales
 
-   public function actualizarSubasta($subasta){
+   public function actualizarSubasta($subasta, $subastaAnterior){
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
@@ -325,7 +325,7 @@ class SubastaData extends Data {
 
         $resultInsert = mysqli_query($conn, $queryInsert);
 
-        $queryDelete = "DELETE FROM tbsubasta WHERE ventaanimal = " . $subasta->getSubastaAnimal()." AND ventacomprador= ".$subasta->getSubastaComprador().";";
+        $queryDelete = "DELETE FROM tbsubasta WHERE id_animal = " . $subastaAnterior->getSubastaAnimal()." AND id_comprador= ".$subastaAnterior->getSubastaComprador().";";
 
         $resultDelete = mysqli_query($conn, $queryDelete);
 
@@ -334,7 +334,7 @@ class SubastaData extends Data {
         $this->insertarControl($subasta->getSubastaAnimal(), $subasta->getSubastaComprador(), $subasta->getSubastaPrecio());
    }//actualizarSubasta
 
-   public function actualizarResubasta($subasta){
+   public function actualizarResubasta($subasta, $subastaAnterior){
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
@@ -356,7 +356,7 @@ class SubastaData extends Data {
 
         $resultInsert = mysqli_query($conn, $queryInsert);
 
-        $queryDelete = "DELETE FROM tbsubasta WHERE resubastaanimal = " . $subasta->getSubastaAnimal()." AND resubastacomprador= ".$subasta->getSubastaComprador().";";
+        $queryDelete = "DELETE FROM tbsubasta WHERE id_animal = " . $subastaAnterior->getSubastaAnimal()." AND id_comprador= ".$subastaAnterior->getSubastaComprador().";";
 
         $resultDelete = mysqli_query($conn, $queryDelete);
 
@@ -368,11 +368,43 @@ class SubastaData extends Data {
    public function actualizarVenta($subasta, $table) {
         /*Actualizar el estado de la venta o de la resubasta (Borrado lógico)*/
         if($table == "tbventa"){
-            $this->actualizarSubasta($subasta);
+            $datos = $this->obtenerDatosVenta($subasta->getSubastaId());
+            $this->actualizarSubasta($subasta, $datos);
         }else if($table == "tbresubasta"){
-            $this->actualizarResubasta($subasta);
+            $datos = $this->obtenerDatosResubasta($subasta->getSubastaId());
+            $this->actualizarResubasta($subasta, $datos);
         }//if-else
     }//insertarVenta
+
+    public function obtenerDatosVenta($idVenta){
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+        $querySelect = "SELECT * FROM tbventa WHERE ventaid=" . $idVenta. ";";
+        $result1 = mysqli_query($conn, $querySelect);
+        mysqli_close($conn);
+        $datos;
+        while ($row = mysqli_fetch_array($result1)) {
+            $datos = new subasta($row['ventaid'], $row['ventaanimal']
+           ,$row['ventacomprador'],$row['ventaprecio'], $row['ventaestado']);
+        }//end while
+        return $datos;
+    }
+
+    public function obtenerDatosResubasta($idResubasta){
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+        $querySelect = "SELECT * FROM tbresubasta WHERE resubastaid=" . $idResubasta. ";";
+        $result1 = mysqli_query($conn, $querySelect);
+        $datos;
+        mysqli_close($conn);
+        while ($row = mysqli_fetch_array($result1)) {
+            $datos = new subasta($row['resubastaid'], $row['resubastaanimal']
+           ,$row['resubastacomprador'],$row['resubastaprecio'], $row['resubastaestado']);
+        }//end while
+        return $datos;
+    }
 
 }//end class
 

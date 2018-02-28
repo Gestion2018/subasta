@@ -58,10 +58,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div  id="top" class="callbacks_container">
                 <ul class="rslides" id="slider4">
                     <li>
-                        <div class=" col-md-4 comment-bottom">
-                            <h3>Datos de Animal</h3>
+                    <div class=" col-md-2 banner-right comment-bottom">
+                            <div>
+                                <h3>Tipo de Vista</h3> <br>
+                                <div><input type ="radio" name ="vista" value ="1" checked> Inserción</div>
+                                <div><input type ="radio" name ="vista" value ="2"> Actualización</div>
+                            </div>
+                        </div>
+                    <div id="espaciosInsertar">
+                        <div class=" col-md-5 comment-bottom">
+                            <h3 id="datosAnimalInsert">Datos de Animal</h3>
                             <form id="cargarD">
-                                <label for="">Número animal</label>
+                                <label id="numeroAnimalInsert" for="">Número animal</label>
                                 <input type="number" id="numeroAnimal2" name="numeroAnimal2" autofocus>
                                 <!-- <select id="numeroAnimal" name="numeroAnimal" class="pruebaSelect"></select> -->
                             </form>
@@ -69,79 +77,71 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <form id="datosAnimal"></form>
                             <label id="message" hidden for="Error" style="color:red">Sin coincidencias</label>
                         </div>
-                        <div class="col-md-8 banner-right">
+                        <div class="col-md-5 banner-right">
                             <div class="comment-bottom">
-                                <h3>Otros datos</h3>
+                                <h3 id="otrosDatosInsert">Otros datos</h3>
                                 <form>
-                                    <label for="">Comprador</label>
+                                    <label id="nombreCompradorInsert" for="">Comprador</label>
                                     <!-- <select id="nombreComprador"></select> -->
                                     <input type="text" id="nombreComprador"  name="nombreComprador">
 
-                                    <label for="Precio">Precio</label>
+                                    <label id="priceInsert" for="Precio">Precio</label>
 
                                     <input id="price" autocomplete="off" name="price" type="text" class="form-control
                                     required" data-mask="₡"placeholder="₡">
-                                    <!--<label for="">Ventas</label>
-                                    <select id="slventas" name="slventas" change> </select>
-                                    <label for="">Resubastas</label>
-                                    <select id="slresubasta" name="slresubastas" change> </select>
-                                    <div id="priceMessage"></div>
-                                    <br>-->
                                     <div class="col-md-5 banner-right">
-                                        <input type="button" class="button_subasta" value="Venta" onclick="registrarAnimal()">
+                                        <input type="button" id="insertarVenta" class="button_subasta" value="Venta" onclick="registrarAnimal()">
                                     </div>
                                     <div class="col-md-2 banner-right"></div>
                                     <div class="col-md-5 banner-right">
-                                        <input type="button" class="button_subasta" value="Resubastar" onclick="registrarReSubasta()">
+                                        <input type="button" id="insertarResubasta" class="button_subasta" value="Resubastar" onclick="registrarReSubasta()">
                                     </div>
                                     <br><br>
                                 </form>
                             </div>
                         </div>
-                        <br><br>
-                         <div class=" col-md-12 comment-bottom">
-                            <br><br>
-                         </div>
-                        <br><br>
-                         <div class=" col-md-4 comment-bottom">
-                            <h3>Subastas</h3>
+                    </div>
+                        
+                        
+                    <div id="espaciosActualizar">
+                        <div class=" col-md-5 comment-bottom">
+                            <h3 id="subastasUpdate">Subastas</h3>
                             <form id="cargarD">
-                                <div>
-                                     <label for="">Subastas</label>
+                                
+                                     <label  id="lSubastas" for="">Subastas</label>
                                     <select id="subastas" name="subastas"></select>
-                                </div>
-                                <div>
-                                    <label for="">Resubastas</label>
+                                
+                                
+                                    <label id="lResubastas" for="">Resubastas</label>
                                     <select id="resubastas" name="resubastas"></select>
-                                </div>
+                                
                             </form>
                         </div>
-                        <div class="col-md-8 banner-right">
-                            <div class="comment-bottom">
-                                <h3>Datos</h3>
+                        <div class="col-md-5 banner-right comment-bottom">
+                                <h3 id="datosUpdate">Datos</h3>
                                 <form>
-                                    <input type="text" name="numeroVenta" id="numeroVenta" value="-1">
-                                    <input type="text" name="table" id="table" value="default">
-                                    <label for="">Numero de Animal</label>
+                                    <input type="hidden" name="numeroVenta" id="numeroVenta" value="-1">
+                                    <input type="hidden" name="table" id="table" value="default">
+                                    <label id="lNumeroAnimalUpdate" for="">Numero de Animal</label>
                                     <!-- <select id="nombreComprador"></select> -->
                                     <input type="text" id="numeroAnimalUpdate"  name="numeroAnimalUpdate">
 
-                                    <label for="">Comprador</label>
+                                    <label id="lNombreCompradorUpdate" for="">Comprador</label>
                                     <!-- <select id="nombreComprador"></select> -->
                                     <input type="text" id="nombreCompradorUpdate"  name="nombreCompradorUpdate">
 
-                                    <label for="Precio">Precio</label>
+                                    <label id="lPriceUpdate" for="Precio">Precio</label>
 
                                     <input id="priceUpdate" autocomplete="off" name="priceUpdate" type="text" class="form-control
                                     required" data-mask="₡"placeholder="₡">
                                     <div>
-                                        <input type="button" class="button_subasta" value="Actualizar" onclick="actualizarRegistro();">
+                                        <input id="actualizar" type="button" class="button_subasta" value="Actualizar" onclick="actualizarRegistro();">
                                     </div>
                                     <br><br>
                                 </form>
-                            </div>
+                            
                         </div>
-                        <div class="clearfix"> </div>
+                    </div>
                     </li>
                 </ul>
             </div>
@@ -192,10 +192,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     });
 
     $(document).ready(function() {
-
         cargarCompradores();
         cargarAnimales();
         cargarVentasResubastas();
+        mostrarCamposInsertar();
     });
 
     function cargarVentasResubastas(){
@@ -638,4 +638,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         $("#nombreCompradorUpdate").val("");
         $("#priceUpdate").val("");
     }//limpiarEspaciosActualizacion
+
+
+    $('input:radio[name=vista]').change(function () {
+        if(this.value == '1'){
+            limpiarEspaciosActualizacion();
+            mostrarCamposInsertar();
+        }//if
+        if(this.value == '2'){
+            limpiarEspaciosActualizacion();
+            mostrarCamposActualizar();
+        }//if
+    });
+
+    function mostrarCamposInsertar(){
+        $("#espaciosActualizar").hide();
+        $("#espaciosInsertar").show();
+    }//mostrarCamposInsertar
+
+    function mostrarCamposActualizar(){
+        $("#espaciosActualizar").show();
+        $("#espaciosInsertar").hide();
+    }//mostrarCamposActualizar
 </script>
