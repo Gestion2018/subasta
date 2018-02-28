@@ -37,6 +37,13 @@ class Data {
                 $this->password = "";
                 $this->db = "bdsubasta";
                 break;
+            case "DESKTOP-PF38PII": //Office's PC
+                $this->isActive = false;
+                $this->server = "localhost";
+                $this->user = "root";
+                $this->password = "";
+                $this->db = "bdsubasta";
+                break;
             case "DESKTOP-BACVEEO": //Office's PC
                 $this->isActive = false;
                 $this->server = "localhost";

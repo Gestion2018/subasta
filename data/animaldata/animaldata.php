@@ -273,7 +273,7 @@ class AnimalData extends Data {
 
        $querySelect = "SELECT animal.animalnumero, animal.animaldonador,
        tipoAnimal.tipoanimalnombre, animal.animalusuario FROM tbanimal As animal
-       INNER JOIN tbtipoanimal AS tipoAnimal ON animal.animaltipo = tipoAnimal.tipoanimalid ORDER BY animal.animalnumero LIMIT 4";
+       INNER JOIN tbtipoanimal AS tipoAnimal ON animal.animaltipo = tipoAnimal.tipoanimalid ORDER BY animal.animalnumero DESC LIMIT 4";
 
        //SELECT * FROM tabla ORDER BY id DESC LIMIT 5
 
@@ -297,9 +297,8 @@ class AnimalData extends Data {
    }//obteneranimales
 
    public function obtenerInfoCliente () {
-        //return $_SERVER['REMOTE_ADDR'];
-        return gethostname();
-        //return "";
+        return $_SERVER['REMOTE_ADDR'];
+        //return gethostname();
     }//obtenerInfoTermninal
 
 }//end class
