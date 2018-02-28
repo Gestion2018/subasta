@@ -12,11 +12,6 @@ include './subastaBusiness.php';
           $resultado = $subastaBusiness->eliminarVenta($subastaid);
         }
 
-        if ($resultado == 1) {
-            header("location: ../../view/subastaView.php?success=deleted");
-        } else {
-            header("location: ../../view/subastaView.php?error=dbError");
-        }//if error a nivel de base
     } else {
         header("location: ../../view/subastaView.php?error=error");
     }//if si esta seteado el campo

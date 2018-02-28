@@ -22,7 +22,7 @@ if (isset($_POST['Eliminar']) || isset($_POST['actualizar']) || isset($_POST['in
 
 class SubastaData extends Data {
 
-	public function insertarVenta($ventaAnimal, $ventaComprador, $ventaPrecio) {
+    public function insertarVenta($ventaAnimal, $ventaComprador, $ventaPrecio) {
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
@@ -112,31 +112,6 @@ class SubastaData extends Data {
         $conn->set_charset('utf8');
 
         $queryUpdate = "UPDATE tbresubasta SET resubastaestado = 'B' WHERE resubastaid = " . $subastaid . ";";
-        $result = mysqli_query($conn, $queryUpdate);
-        mysqli_close($conn);
-
-        return $result;
-
-    }//eliminarResubasta
-
-    public function cancelarVenta($subastaid) {
-
-        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
-        $conn->set_charset('utf8');
-
-        $queryUpdate = "UPDATE tbventa SET ventaestado = 'C' WHERE ventaid = " . $subastaid . ";";
-        $result = mysqli_query($conn, $queryUpdate);
-        mysqli_close($conn);
-
-        return $result;
-
-    }//eliminarResubasta
-    public function cancelarResubasta($subastaid) {
-
-        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
-        $conn->set_charset('utf8');
-
-        $queryUpdate = "UPDATE tbresubasta SET resubastaestado = 'C' WHERE resubastaid = " . $subastaid . ";";
         $result = mysqli_query($conn, $queryUpdate);
         mysqli_close($conn);
 
@@ -261,7 +236,7 @@ class SubastaData extends Data {
         }else{
             $montoTotal = $montoVentas + 0;
         }
-
+        
 
         mysqli_close($conn);
 
@@ -291,16 +266,16 @@ class SubastaData extends Data {
             $ventas["Ventas"][] = [];
             $ventas["Resubastas"][] = [];
             while ($row = mysqli_fetch_array($resultVentas)) {
-							if($row['ventaestado']!='C' && $row['ventaestado']!='B'){
-								$ventas["Ventas"][] = $row;
-							}
+                            if($row['ventaestado']!='C' && $row['ventaestado']!='B'){
+                                $ventas["Ventas"][] = $row;
+                            }
             }//end while
 
             while ($row = mysqli_fetch_array($resultResubastas)) {
-							if(if($row['resubastaestado']!='C' && $row['resubastaestado']!='B'){
-								$ventas["Resubastas"][] = $row;
-							}
-						}//end while
+                            if($row['resubastaestado']!='C' && $row['resubastaestado']!='B'){
+                                $ventas["Resubastas"][] = $row;
+                            }
+                        }//end while
 
             echo json_encode($ventas);
     }//Facturas por

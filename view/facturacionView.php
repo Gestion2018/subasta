@@ -120,7 +120,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         var codigoComprador = $("#compradores").val();
 
         $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
-            var comprador = JSON.parse(data);
+          var comprador = JSON.parse(data);
 
            salida = "<table class='table'>"+
                                 "<thead>"+
@@ -345,10 +345,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 function cancelarResubasta(id){
   $.post("../business/subastabusiness/subastaAction.php",{'Eliminar': id,'tabla': 'resubasta'}, function(data){
+    alert(data);
   });
 }//cancelarResubastas
 function cancelarVenta(id){
   $.post("../business/subastabusiness/subastaAction.php",{'Eliminar': id,'tabla': 'venta'}, function(data){
+  alert(data);
   });
 }//cancelarVenta
 
