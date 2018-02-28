@@ -130,7 +130,7 @@ class SubastaData extends Data {
         $ventas = [];
         while ($row = mysqli_fetch_array($result)) {
 
-            if($row['ventaestado']!='B'){
+            if($row['ventaestado']!='B' && $row['ventaestado'] != 'C'){
                  $subasta = new subasta($row['ventaid'], $row['ventaanimal']
                 ,$row['ventacomprador'],$row['ventaprecio'], $row['ventaestado']);
                 array_push($ventas, $subasta);
@@ -154,7 +154,7 @@ class SubastaData extends Data {
         $resubastas = [];
         while ($row = mysqli_fetch_array($result)) {
 
-            if($row['resubastaestado']!='B'){
+            if($row['resubastaestado']!='B' && $row['resubastaestado'] != 'C'){
                  $subasta = new subasta($row['resubastaid'], $row['resubastaanimal']
                 ,$row['resubastacomprador'],$row['resubastaprecio'], $row['resubastaestado']);
                 array_push($resubastas, $subasta);
