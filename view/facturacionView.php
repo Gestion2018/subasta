@@ -265,12 +265,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
                                 $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
 
-                                salida +="<tr>\n"+
+                                salida += "<thead>\n"+
+                                      "<tr>\n"+
                                         "<th>Código Animal</th>\n"+
                                         "<th>Precio</th>\n"+
                                         "<th>Código Resubasta</th>\n"+
                                         "<th>Cancelar</th>\n"+
-                                    "</tr>";
+                                    "</tr>"+
+                                    "</thead>";
 
                               for (var i = 1; i < comprador.Resubastas.length; i++) {
                                   salida += "<tr>"+
@@ -317,11 +319,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     }//end for
 
     if(comprador.Resubastas.length>1){
-    salida +="<tr>"+
+    salida += "<thead>\n"+
+        "<tr>"+
             "<th>Código Animal</th>"+
             "<th>Precio</th>"+
             "<th>Código Resubasta</th>"+
-        "</tr>";
+        "</tr>"+
+        "</thead>\n";
         }
         for(i=1;i<comprador.Resubastas.length;i++){
           if($('input:checkbox[id="Resubasta'+i+'"]').prop('checked')){
