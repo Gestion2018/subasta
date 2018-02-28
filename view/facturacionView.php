@@ -63,6 +63,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div>
                     <label>Nombre de Comprador</label>
                     <select id="compradores" name="compradores" class="pruebaSelect">
+                    <option value='-1'>Seleccione un comprador</option>
                         <?php
                             foreach ($compradores as $comprador) {
                                 echo '<option value = '.$comprador->getCompradorCodigo().' >'.$comprador->getCompradorCodigo()."-".$comprador->getCompradorNombreCompleto().'</option>';
@@ -231,60 +232,61 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     $("#compradores").change(function () {
         var codigoComprador = $("#compradores").val();
-
-        $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
-            var comprador = JSON.parse(data);
-           salida = "<table class='table'>\n"+
-                                "<thead>\n"+
-                                    "<tr>\n"+
-                                        "<th>Código Animal</th>\n"+
-                                        "<th>Precio</th>\n"+
-                                        "<th>Código Venta</th>\n"+
-                                        "<th>Cancelar</th>\n"+
-
-                                    "</tr>\n"+
-                                    "</thead>\n"+
-                            "<tbody>\n";
-
-                            if(comprador.Ventas.length > 1){
-                                $("#compradorNumeroIdentificacion").val(comprador.Ventas[1].compradorcodigo);
-            $("#compradorNombreCompleto").val(comprador.Ventas[1].compradornombrecompleto);
-
-                              for (var i = 1; i < comprador.Ventas.length; i++) {
-                                  salida += "<tr>"+
-                                      "<td>" + comprador.Ventas[i].ventaanimal + "</td>\n"+
-                                      "<td>" + comprador.Ventas[i].ventaprecio + "</td>\n"+
-                                      "<td>" + comprador.Ventas[i].ventaid + "</td>\n"+
-                                      "<td><input type='checkbox' id='Venta" + i + "'  > </td>\n"+
-                                  "</tr>\n";
-                              }
-                            }
-
-                            if(comprador.Resubastas.length > 1){
-
-                                $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
-                                $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
-
-                                salida += "<thead>\n"+
+        if(codigoComprador != '-1'){
+            $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
+              var comprador = JSON.parse(data);
+             salida = "<table class='table'>\n"+
+                                  "<thead>\n"+
                                       "<tr>\n"+
-                                        "<th>Código Animal</th>\n"+
-                                        "<th>Precio</th>\n"+
-                                        "<th>Código Resubasta</th>\n"+
-                                        "<th>Cancelar</th>\n"+
-                                    "</tr>"+
-                                    "</thead>";
+                                          "<th>Código Animal</th>\n"+
+                                          "<th>Precio</th>\n"+
+                                          "<th>Código Venta</th>\n"+
+                                          "<th>Cancelar</th>\n"+
 
-                              for (var i = 1; i < comprador.Resubastas.length; i++) {
-                                  salida += "<tr>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>\n"+
-                                      "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>\n"+
-                                      "<td>" + comprador.Resubastas[i].resubastaid + "</td>\n"+
-                                      "<td><input type='checkbox' id='Resubasta"+ i +"' > </td>\n"+
-                                  "</tr>";
+                                      "</tr>\n"+
+                                      "</thead>\n"+
+                              "<tbody>\n";
+
+                              if(comprador.Ventas.length > 1){
+                                  $("#compradorNumeroIdentificacion").val(comprador.Ventas[1].compradorcodigo);
+              $("#compradorNombreCompleto").val(comprador.Ventas[1].compradornombrecompleto);
+
+                                for (var i = 1; i < comprador.Ventas.length; i++) {
+                                    salida += "<tr>"+
+                                        "<td>" + comprador.Ventas[i].ventaanimal + "</td>\n"+
+                                        "<td>" + comprador.Ventas[i].ventaprecio + "</td>\n"+
+                                        "<td>" + comprador.Ventas[i].ventaid + "</td>\n"+
+                                        "<td><input type='checkbox' id='Venta" + i + "'  > </td>\n"+
+                                    "</tr>\n";
+                                }
                               }
-                            }
-            $('#ventas').html(salida);
-        });
+
+                              if(comprador.Resubastas.length > 1){
+
+                                  $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
+                                  $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
+
+                                  salida +="<tr>\n"+
+                                          "<th>Código Animal</th>\n"+
+                                          "<th>Precio</th>\n"+
+                                          "<th>Código Resubasta</th>\n"+
+                                          "<th>Cancelar</th>\n"+
+                                      "</tr>";
+
+                                for (var i = 1; i < comprador.Resubastas.length; i++) {
+                                    salida += "<tr>"+
+                                        "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>\n"+
+                                        "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>\n"+
+                                        "<td>" + comprador.Resubastas[i].resubastaid + "</td>\n"+
+                                        "<td><input type='checkbox' id='Resubasta"+ i +"' > </td>\n"+
+                                    "</tr>";
+                                }
+                              }
+              $('#ventas').html(salida);
+          });
+        }else{
+          $('#ventas').hide();
+        }
     });
 
     function generarFactura(){
@@ -319,13 +321,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     }//end for
 
     if(comprador.Resubastas.length>1){
-    salida += "<thead>\n"+
-        "<tr>"+
+    salida +="<tr>"+
             "<th>Código Animal</th>"+
             "<th>Precio</th>"+
             "<th>Código Resubasta</th>"+
-        "</tr>"+
-        "</thead>\n";
+        "</tr>";
         }
         for(i=1;i<comprador.Resubastas.length;i++){
           if($('input:checkbox[id="Resubasta'+i+'"]').prop('checked')){
