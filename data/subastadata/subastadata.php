@@ -106,12 +106,37 @@ class SubastaData extends Data {
 
     }//eliminarVenta
 
-    public function eliminarRresubasta($subastaid) {
+    public function eliminarResubasta($subastaid) {
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
         $queryUpdate = "UPDATE tbresubasta SET resubastaestado = 'B' WHERE resubastaid = " . $subastaid . ";";
+        $result = mysqli_query($conn, $queryUpdate);
+        mysqli_close($conn);
+
+        return $result;
+
+    }//eliminarResubasta
+
+    public function cancelarVenta($subastaid) {
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $queryUpdate = "UPDATE tbventa SET ventaestado = 'C' WHERE ventaid = " . $subastaid . ";";
+        $result = mysqli_query($conn, $queryUpdate);
+        mysqli_close($conn);
+
+        return $result;
+
+    }//eliminarResubasta
+    public function cancelarResubasta($subastaid) {
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $queryUpdate = "UPDATE tbresubasta SET resubastaestado = 'C' WHERE resubastaid = " . $subastaid . ";";
         $result = mysqli_query($conn, $queryUpdate);
         mysqli_close($conn);
 
@@ -236,7 +261,7 @@ class SubastaData extends Data {
         }else{
             $montoTotal = $montoVentas + 0;
         }
-        
+
 
         mysqli_close($conn);
 
