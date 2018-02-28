@@ -119,7 +119,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <select id="animalRaza" name="animalRaza" size="10">
                                 <?php
                                     foreach ($razas as $raza) {
-                                        if($raza->getRazaId() == 1){
+                                        if($raza->getRazaId() == 33){
                                             echo '<option selected="true" value='.$raza->getRazaId().'>'.$raza->getRazaNombre().'</option>';
                                         }else{
                                             echo '<option value='.$raza->getRazaId().'>'.$raza->getRazaNombre().'</option>';

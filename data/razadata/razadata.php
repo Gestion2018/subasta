@@ -86,8 +86,10 @@ class RazaData extends Data {
         mysqli_close($conn);
         $razas = [];
         while ($row = mysqli_fetch_array($result)) {
+            if($row['razaid'] != 0){
                 $raza = new Raza($row['razaid'], $row['razanombre']);
                 array_push($razas, $raza);
+            }                
         }//end while
 
         return $razas;
