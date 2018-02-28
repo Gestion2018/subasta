@@ -297,8 +297,18 @@ class AnimalData extends Data {
    }//obteneranimales
 
    public function obtenerInfoCliente () {
-        return $_SERVER['REMOTE_ADDR'];
-        //return gethostname();
+        $cliente = $_SERVER['REMOTE_ADDR'];
+        if($cliente = "192.168.0.100"){
+            return "Silvia";
+        }else if($cliente = "192.168.0.101"){
+            return "Johan";
+        }else if($cliente = "192.168.0.102"){
+            return "Danny";
+        }else if($cliente = "192.168.0.103"){
+            return "Silvia";
+        }else if($cliente = "192.168.0.105"){
+            return "Alfonso";
+        }
     }//obtenerInfoTermninal
 
 }//end class
