@@ -11,6 +11,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="../js/jquery-1.11.0.min.js"></script>
 <!-- Custom Theme files -->
+<link rel="stylesheet" href="./alertify.core.css" />
+<link rel="stylesheet" href="./alertify.default.css" id="toggleCSS" />
+<script src="./alertify.min.js"></script>
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all"/>
 <link rel="shortcut icon" type="image/x-icon" href="../images/vaca.ico" /><!-- Icono de la pagina -->
 <!-- Custom Theme files -->
@@ -86,9 +89,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <label>Nombre Completo</label>
                         <td><input type="text" name="compradorNombreCompleto" id="compradorNombreCompleto" placeholder="Nombre Completo" /></td>
                     </div>
-                    <div id="ventas" >
+                    <div id="pdf">
+                      <div id="ventas">
 
-                  </div>
+                      </div>
+                    </div>
                     <div>
                         <input type="button" value="Facturar" name="facturar" id="facturar" onclick="generarFactura();" />
                     </div>
@@ -229,18 +234,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
             var comprador = JSON.parse(data);
+           salida = "<table class='table'>\n"+
+                                "<thead>\n"+
+                                    "<tr>\n"+
+                                        "<th>Código Animal</th>\n"+
+                                        "<th>Precio</th>\n"+
+                                        "<th>Código Venta</th>\n"+
+                                        "<th>Cancelar</th>\n"+
 
-           salida = "<table class='table'>"+
-                                "<thead>"+
-                                    "<tr>"+
-                                        "<th>Código Animal</th>"+
-                                        "<th>Precio</th>"+
-                                        "<th>Código Venta</th>"+
-                                        "<th>Cancelar</th>"+
-
-                                    "</tr>"+
-                                "</thead>"+
-                            "<tbody>";
+                                    "</tr>\n"+
+                                    "</thead>\n"+
+                            "<tbody>\n";
 
                             if(comprador.Ventas.length > 1){
                                 $("#compradorNumeroIdentificacion").val(comprador.Ventas[1].compradorcodigo);
@@ -248,11 +252,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                               for (var i = 1; i < comprador.Ventas.length; i++) {
                                   salida += "<tr>"+
-                                      "<td>" + comprador.Ventas[i].ventaanimal + "</td>"+
-                                      "<td>" + comprador.Ventas[i].ventaprecio + "</td>"+
-                                      "<td>" + comprador.Ventas[i].ventaid + "</td>"+
-                                      "<td><input type='checkbox' id='Venta" + i + "'  > </td>"+
-                                  "</tr>";
+                                      "<td>" + comprador.Ventas[i].ventaanimal + "</td>\n"+
+                                      "<td>" + comprador.Ventas[i].ventaprecio + "</td>\n"+
+                                      "<td>" + comprador.Ventas[i].ventaid + "</td>\n"+
+                                      "<td><input type='checkbox' id='Venta" + i + "'  > </td>\n"+
+                                  "</tr>\n";
                               }
                             }
 
@@ -261,19 +265,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
                                 $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
 
-                                salida +="<tr>"+
-                                        "<th>Código Animal</th>"+
-                                        "<th>Precio</th>"+
-                                        "<th>Código Resubasta</th>"+
-                                        "<th>Cancelar</th>"+
+                                salida +="<tr>\n"+
+                                        "<th>Código Animal</th>\n"+
+                                        "<th>Precio</th>\n"+
+                                        "<th>Código Resubasta</th>\n"+
+                                        "<th>Cancelar</th>\n"+
                                     "</tr>";
 
                               for (var i = 1; i < comprador.Resubastas.length; i++) {
                                   salida += "<tr>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaid + "</td>"+
-                                      "<td><input type='checkbox' id='Resubasta"+ i +"' > </td>"+
+                                      "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>\n"+
+                                      "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>\n"+
+                                      "<td>" + comprador.Resubastas[i].resubastaid + "</td>\n"+
+                                      "<td><input type='checkbox' id='Resubasta"+ i +"' > </td>\n"+
                                   "</tr>";
                               }
                             }
@@ -286,8 +290,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
         var comprador = JSON.parse(data);
-        alert(data);
-        var precio = 0;
+        var precio = 0.0;
+
+        if(comprador.Ventas.length>1){
         var salida = "<table id='facturacion' name='facturacion' class='table'>"+
                   "<thead>"+
                     "<tr>"+
@@ -297,38 +302,59 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     "</tr>"+
                   "</thead>"+
                 "<tbody>";
+        }//en if
 
     for(i=1;i<comprador.Ventas.length;i++){
-      if($('input:checkbox[id=Venta"'+i+'"]').prop('checked')){
+      if($('input:checkbox[id="Venta'+i+'"]').prop('checked')){
+        cancelarVenta(comprador.Ventas[i].ventaid);
         salida += "<tr>"+
             "<td>" + comprador.Ventas[i].ventaanimal + "</td>"+
             "<td>" + comprador.Ventas[i].ventaprecio + "</td>"+
             "<td>" + comprador.Ventas[i].ventaid + "</td>"+
         "</tr>";
-        precio += (comprador.Ventas[i].ventaprecio);
-        alert('if');
+        precio += parseInt(comprador.Ventas[i].ventaprecio);
       }//la tupla seleccionada por el check
     }//end for
 
+    if(comprador.Resubastas.length>1){
     salida +="<tr>"+
             "<th>Código Animal</th>"+
             "<th>Precio</th>"+
             "<th>Código Resubasta</th>"+
         "</tr>";
+        }
+        for(i=1;i<comprador.Resubastas.length;i++){
+          if($('input:checkbox[id="Resubasta'+i+'"]').prop('checked')){
+            cancelarResubasta(comprador.Resubastas[i].resubastaid);
+            salida += "<tr>"+
+                "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>"+
+                "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>"+
+                "<td>" + comprador.Resubastas[i].resubastaid + "</td>"+
+            "</tr>";
+            precio += parseInt(comprador.Resubastas[i].resubastaprecio);
+          }//la tupla seleccionada por el check
+        }//end for
 
-
-    salida += "<tr><th>PRECIO TOTAL</th><th>"+ precio +"</th></tbody></table>";
-
+    salida += "<tr><th>PRECIO TOTAL</th><th>"+ precio +"</th><th> </th></tr></tbody></table>";
       $('#ventas').html(salida);
-      exportPdf();
+      mostrarMensaje("delay","Cancelando, generando factura....");
   });
-
 
 }//generarFactura
 
-  function exportPdf() {
+
+function cancelarResubasta(id){
+  $.post("../business/subastabusiness/subastaAction.php",{'Eliminar': id,'tabla': 'resubasta'}, function(data){
+  });
+}//cancelarResubastas
+function cancelarVenta(id){
+  $.post("../business/subastabusiness/subastaAction.php",{'Eliminar': id,'tabla': 'venta'}, function(data){
+  });
+}//cancelarVenta
+
+function exportPdf() {
       var pdf = new jsPDF('l', 'pt', 'letter');
-      var source = $('#facturacion').get(0);
+      var source = $('#pdf').get(0);
 
       specialElementHandlers = {
           '#bypassme': function (element, renderer) {
@@ -339,7 +365,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       margins = {
           top: 40,
           bottom: 20,
-          left: 10,
+          left: 100,
           width: "100%"
       };
 
@@ -351,8 +377,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   'elementHandlers': specialElementHandlers
               },
               function (dispose) {
-                  pdf.save('Factura.pdf');
+                  pdf.save($('#compradorNumeroIdentificacion').val()+"-"+$('#compradorNombreCompleto').val()+'.pdf');
               }, margins);
   }
+
+
+  function mostrarMensaje(estado,mensaje){
+      if(estado === "success"){
+          reset();
+          alertify.success(mensaje);
+          return false;
+      }else if(estado === "error"){
+          reset();
+          alertify.error(mensaje);
+          return false;
+      }else if(estado === "delay"){
+        reset();
+        alertify.log(mensaje);
+        exportPdf();
+        return false;
+      }//else-if
+  }//mostrarMensaje
+
+  /*FUNCION QUE LIMPIA EL ESPACIO PARA COLOCAR LAS NOTIFICACIONES*/
+  function reset () {
+      $("#toggleCSS").attr("href", "./alertify.default.css");
+          alertify.set({
+              labels : {
+                  ok     : "OK",
+                  cancel : "Cancel"
+              },
+              delay : 5000,
+              buttonReverse : false,
+              buttonFocus   : "ok"
+      });
+  }//reset
 
 </script>

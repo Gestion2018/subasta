@@ -6,7 +6,7 @@ Entra en el if se realiza las siguientes operaciones, por que se toma
 la ruta desde el business, y entra en el else si no se realiza el crud por
 que se toma la ruta desde el view
 */
-if (isset($_POST['eliminar']) || isset($_POST['actualizar']) || isset($_POST['insertar'])
+if (isset($_POST['Eliminar']) || isset($_POST['actualizar']) || isset($_POST['insertar'])
 || isset($_POST['obtener']) || isset($_POST['registrarVenta']) || isset($_POST['insertarResubasta']) || isset($_POST['obtenerMontoSubastas']) || isset($_POST['FacturaComprador']) || isset($_POST['ObtenerResubastasyVentas']) || isset($_POST['obtenerUnaVenta']) || isset($_POST['vistaRegistroSubasta']) || isset($_POST['obtenerUnaResubasta'])) {
 
     include_once '../../data/data.php';
@@ -244,18 +244,19 @@ class SubastaData extends Data {
 
     }//insertarVenta
 
-        public function obtenerVentasPorComprador($compradorId){
+
+    public function obtenerVentasPorComprador($compradorId){
             $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
             $conn->set_charset('utf8');
 
             $querySelectVentas = "SELECT tbcomprador.compradorcodigo,tbcomprador.compradornombrecompleto,
              tbcomprador.compradortelefono,tbventa.ventaid,tbventa.ventaprecio,
-             tbventa.ventaanimal FROM tbcomprador,tbventa WHERE tbventa.ventacomprador=" .$compradorId.
-              " AND tbcomprador.compradorcodigo =" .$compradorId. ";";
+             tbventa.ventaanimal,tbventa.ventaestado FROM tbcomprador,tbventa WHERE tbventa.ventacomprador=" .$compradorId.
+              " AND tbcomprador.compradorcodigo =" .$compradorId.";";
 
             $querySelectResubastas = "SELECT tbcomprador.compradorcodigo,tbcomprador.compradornombrecompleto,
              tbcomprador.compradortelefono,tbresubasta.resubastaid,tbresubasta.resubastaprecio,
-             tbresubasta.resubastaanimal FROM tbcomprador,tbresubasta WHERE tbresubasta.resubastacomprador=" .$compradorId.
+             tbresubasta.resubastaanimal,tbresubasta.resubastaestado FROM tbcomprador,tbresubasta WHERE tbresubasta.resubastacomprador=" .$compradorId.
           " AND tbcomprador.compradorcodigo =" .$compradorId. ";";
 
             $resultVentas = mysqli_query($conn, $querySelectVentas);
@@ -265,12 +266,16 @@ class SubastaData extends Data {
             $ventas["Ventas"][] = [];
             $ventas["Resubastas"][] = [];
             while ($row = mysqli_fetch_array($resultVentas)) {
-                $ventas["Ventas"][] = $row;
+							if($row['ventaestado']!='C' && $row['ventaestado']!='B'){
+								$ventas["Ventas"][] = $row;
+							}
             }//end while
 
             while ($row = mysqli_fetch_array($resultResubastas)) {
-                $ventas["Resubastas"][] = $row;
-            }//end while
+							if($row['resubastaestado']!='C' && $row['resuabastaestado']!='B'){
+								$ventas["Resubastas"][] = $row;
+							}
+						}//end while
 
             echo json_encode($ventas);
     }//Facturas por

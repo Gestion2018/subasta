@@ -4,7 +4,7 @@ Entra en el if se realiza las siguientes operaciones, por que se toma
 la ruta desde el business, y entra en el else si no se realiza el crud por
 que se toma la ruta desde el view
 */
-if (isset($_POST['eliminar']) || isset($_POST['insertarVenta']) || isset($_POST['insertarResubasta'])
+if (isset($_POST['Eliminar']) || isset($_POST['insertarVenta']) || isset($_POST['insertarResubasta'])
 || isset($_POST['eliminarSubastaVenta']) || isset($_POST['eliminarSubastaResubasta'])
 || isset($_POST['obtener']) || isset($_POST['registrarVenta']) || isset($_POST['obtenerMontoSubastas'])
 || isset($_POST['FacturaComprador']) || isset($_POST['vistaRegistroSubasta']) || isset($_POST['ObtenerResubastasyVentas']) || isset($_POST['obtenerUnaVenta']) || isset($_POST['obtenerUnaResubasta']) || isset($_POST['actualizar'])) {
@@ -29,11 +29,11 @@ class SubastaBusiness {
     }//InsertarComprador
 
 
-    public function eliminarTBSubastaVenta($subastaid) {
-        return $this->subastaData->eliminarSubastaVenta($subastaid);
+    public function eliminarVenta($subastaid) {
+        return $this->subastaData->eliminarVenta($subastaid);
     }//EliminarComprador
 
-    public function eliminarTBSubastaResubasta($subastaid) {
+    public function eliminarResubasta($subastaid) {
         return $this->subastaData->eliminarResubasta($subastaid);
     }//EliminarComprador
 

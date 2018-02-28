@@ -1,14 +1,16 @@
 <?php
 
 include './subastaBusiness.php';
- if (isset($_POST['eliminarSubastaVenta'])) {
+ if (isset($_POST['Eliminar'])) {
+    if (isset($_POST['tabla'])) {
 
-    if (isset($_POST['subastaid'])) {
-
-        $subastaid = $_POST['subastaid'];
-
+        $subastaid = $_POST['Eliminar'];
         $subastaBusiness = new subastaBusiness();
-        $resultado = $subastaBusiness->eliminarTBSubastaVenta($subastaid);
+        if($_POST['tabla']=='resubasta'){
+          $resultado = $subastaBusiness->eliminarResubasta($subastaid);
+        }else{
+          $resultado = $subastaBusiness->eliminarVenta($subastaid);
+        }
 
         if ($resultado == 1) {
             header("location: ../../view/subastaView.php?success=deleted");
