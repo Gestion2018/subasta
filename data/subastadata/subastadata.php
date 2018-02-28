@@ -272,7 +272,7 @@ class SubastaData extends Data {
             }//end while
 
             while ($row = mysqli_fetch_array($resultResubastas)) {
-							if($row['resubastaestado']!='C' && $row['resuabastaestado']!='B'){
+							if(if($row['resubastaestado']!='C' && $row['resubastaestado']!='B'){
 								$ventas["Resubastas"][] = $row;
 							}
 						}//end while
