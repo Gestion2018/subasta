@@ -275,6 +275,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             $("#nombreComprador").autocomplete({
                 source: items
             });
+            $("#nombreCompradorUpdate").autocomplete({
+                source: items
+            });
         });
     }
 
@@ -286,6 +289,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 items.push(animales.Data[i].animalnumero);
             }
             $("#numeroAnimal2").autocomplete({
+                source: items
+            });
+            $("#numeroAnimalUpdate").autocomplete({
                 source: items
             });
         });
