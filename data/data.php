@@ -14,7 +14,7 @@ class Data {
     public function Data() {
 
         $hostName = gethostname();
-        
+
         switch ($hostName) {
             case "SILVIA": //Office's PC
                 $this->isActive = false;
@@ -37,12 +37,12 @@ class Data {
                 $this->password = "";
                 $this->db = "bdsubasta";
                 break;
-            case "DESKTOP-PF38PII": //Office's PC
+            case "DESKTOP-BACVEEO": //Office's PC
                 $this->isActive = false;
                 $this->server = "localhost";
                 $this->user = "root";
                 $this->password = "";
-                $this->db = "bdsubasta";
+                $this->db = "dbsubasta";
                 break;
             case "danny-GP62MVR-6RF": //laptop's PC
                 $this->isActive = false;
@@ -68,7 +68,7 @@ class Data {
         }//end switch
 
     }//constructor
-    
+
 }//end class
 
 ?>

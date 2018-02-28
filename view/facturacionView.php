@@ -23,6 +23,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Baumans' rel='stylesheet' type='text/css'>
 <script src="./jquery-3.2.1.js"></script>
+<script src="../pdf/html2pdf.js" type="text/javascript"></script>
+<script src="../pdf/jspdf.debug.js" type="text/javascript"></script>
 <link href="../select2.min.css" rel="stylesheet" />
 <script src="../select2.min.js"></script>
 <?php
@@ -130,13 +132,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             if(comprador.Ventas.length > 1){
                                 $("#compradorNumeroIdentificacion").val(comprador.Ventas[1].compradorcodigo);
             $("#compradorNombreCompleto").val(comprador.Ventas[1].compradornombrecompleto);
-            
+
                               for (var i = 1; i < comprador.Ventas.length; i++) {
                                   salida += "<tr>"+
                                       "<td>" + comprador.Ventas[i].ventaanimal + "</td>"+
                                       "<td>" + comprador.Ventas[i].ventaprecio + "</td>"+
                                       "<td>" + comprador.Ventas[i].ventaid + "</td>"+
-                                      "<td><input type='checkbox' id='" + i + "'  > </td>"+
+                                      "<td><input type='checkbox' id='Venta"+i+"'> </td>"+
                                   "</tr>";
                               }
                             }
@@ -145,7 +147,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                 $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
                                 $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
-            
+
                                 salida +="<tr>"+
                                         "<th>Código Animal</th>"+
                                         "<th>Precio</th>"+
@@ -158,7 +160,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                       "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>"+
                                       "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>"+
                                       "<td>" + comprador.Resubastas[i].resubastaid + "</td>"+
-                                      "<td><input type='checkbox' id='"+ i +"' > </td>"+
+                                      "<td><input type='checkbox' id='Resubasta'"+ i +" > </td>"+
                                   "</tr>";
                               }
                             }
@@ -243,13 +245,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             if(comprador.Ventas.length > 1){
                                 $("#compradorNumeroIdentificacion").val(comprador.Ventas[1].compradorcodigo);
             $("#compradorNombreCompleto").val(comprador.Ventas[1].compradornombrecompleto);
-            
+
                               for (var i = 1; i < comprador.Ventas.length; i++) {
                                   salida += "<tr>"+
                                       "<td>" + comprador.Ventas[i].ventaanimal + "</td>"+
                                       "<td>" + comprador.Ventas[i].ventaprecio + "</td>"+
                                       "<td>" + comprador.Ventas[i].ventaid + "</td>"+
-                                      "<td><input type='checkbox' id='" + i + "'  > </td>"+
+                                      "<td><input type='checkbox' id='Venta" + i + "'  > </td>"+
                                   "</tr>";
                               }
                             }
@@ -258,7 +260,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                 $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
                                 $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
-            
+
                                 salida +="<tr>"+
                                         "<th>Código Animal</th>"+
                                         "<th>Precio</th>"+
@@ -271,11 +273,86 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                       "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>"+
                                       "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>"+
                                       "<td>" + comprador.Resubastas[i].resubastaid + "</td>"+
-                                      "<td><input type='checkbox' id='"+ i +"' > </td>"+
+                                      "<td><input type='checkbox' id='Resubasta"+ i +"' > </td>"+
                                   "</tr>";
                               }
                             }
             $('#ventas').html(salida);
         });
     });
+
+    function generarFactura(){
+    var codigoComprador = $("#compradores").val();
+
+    $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
+        var comprador = JSON.parse(data);
+        alert(data);
+        var precio = 0;
+        var salida = "<table id='facturacion' name='facturacion' class='table'>"+
+                  "<thead>"+
+                    "<tr>"+
+                      "<th>Código Animal</th>"+
+                      "<th>Precio</th>"+
+                      "<th>Código Venta</th>"+
+                    "</tr>"+
+                  "</thead>"+
+                "<tbody>";
+
+    for(i=1;i<comprador.Ventas.length;i++){
+      if($('input:checkbox[id=Venta"'+i+'"]').prop('checked')){
+        salida += "<tr>"+
+            "<td>" + comprador.Ventas[i].ventaanimal + "</td>"+
+            "<td>" + comprador.Ventas[i].ventaprecio + "</td>"+
+            "<td>" + comprador.Ventas[i].ventaid + "</td>"+
+        "</tr>";
+        precio += (comprador.Ventas[i].ventaprecio);
+        alert('if');
+      }//la tupla seleccionada por el check
+    }//end for
+
+    salida +="<tr>"+
+            "<th>Código Animal</th>"+
+            "<th>Precio</th>"+
+            "<th>Código Resubasta</th>"+
+        "</tr>";
+
+
+    salida += "<tr><th>PRECIO TOTAL</th><th>"+ precio +"</th></tbody></table>";
+
+      $('#ventas').html(salida);
+      exportPdf();
+  });
+
+
+}//generarFactura
+
+  function exportPdf() {
+      var pdf = new jsPDF('l', 'pt', 'letter');
+      var source = $('#facturacion').get(0);
+
+      specialElementHandlers = {
+          '#bypassme': function (element, renderer) {
+              return true;
+          }
+      };
+
+      margins = {
+          top: 40,
+          bottom: 20,
+          left: 10,
+          width: "100%"
+      };
+
+      pdf.fromHTML(
+              source,
+              margins.left,
+              margins.top, {
+                  'width': margins.width,
+                  'elementHandlers': specialElementHandlers
+              },
+              function (dispose) {
+                  pdf.save('Factura.pdf');
+              }, margins);
+  }
+
 </script>
