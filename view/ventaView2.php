@@ -652,6 +652,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     function mostrarCamposInsertar(){
         $("#espaciosActualizar").hide();
         $("#espaciosInsertar").show();
+        $("#numeroAnimal2").focus();
     }//mostrarCamposInsertar
 
     function mostrarCamposActualizar(){
