@@ -63,7 +63,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div>
                     <label>Nombre de Comprador</label>
                     <select id="compradores" name="compradores" class="pruebaSelect">
-                    <option value='-1'>Seleccione un comprador</option>
+                      <option value='-1'>Seleccione un comprador</option>
                         <?php
                             foreach ($compradores as $comprador) {
                                 echo '<option value = '.$comprador->getCompradorCodigo().' >'.$comprador->getCompradorCodigo()."-".$comprador->getCompradorNombreCompleto().'</option>';
@@ -116,63 +116,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </html>
 
 <script>
-
-    $(document).ready(function(){
-        var codigoComprador = $("#compradores").val();
-
-        $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
-          var comprador = JSON.parse(data);
-
-           salida = "<table class='table'>"+
-                                "<thead>"+
-                                    "<tr>"+
-                                        "<th>Código Animal</th>"+
-                                        "<th>Precio</th>"+
-                                        "<th>Código Venta</th>"+
-                                        "<th>Cancelar</th>"+
-
-                                    "</tr>"+
-                                "</thead>"+
-                            "<tbody>";
-
-                            if(comprador.Ventas.length > 1){
-                                $("#compradorNumeroIdentificacion").val(comprador.Ventas[1].compradorcodigo);
-            $("#compradorNombreCompleto").val(comprador.Ventas[1].compradornombrecompleto);
-
-                              for (var i = 1; i < comprador.Ventas.length; i++) {
-                                  salida += "<tr>"+
-                                      "<td>" + comprador.Ventas[i].ventaanimal + "</td>"+
-                                      "<td>" + comprador.Ventas[i].ventaprecio + "</td>"+
-                                      "<td>" + comprador.Ventas[i].ventaid + "</td>"+
-                                      "<td><input type='checkbox' id='Venta"+i+"'> </td>"+
-                                  "</tr>";
-                              }
-                            }
-
-                            if(comprador.Resubastas.length > 1){
-
-                                $("#compradorNumeroIdentificacion").val(comprador.Resubastas[1].compradorcodigo);
-                                $("#compradorNombreCompleto").val(comprador.Resubastas[1].compradornombrecompleto);
-
-                                salida +="<tr>"+
-                                        "<th>Código Animal</th>"+
-                                        "<th>Precio</th>"+
-                                        "<th>Código Resubasta</th>"+
-                                        "<th>Cancelar</th>"+
-                                    "</tr>";
-
-                              for (var i = 1; i < comprador.Resubastas.length; i++) {
-                                  salida += "<tr>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaanimal + "</td>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaprecio + "</td>"+
-                                      "<td>" + comprador.Resubastas[i].resubastaid + "</td>"+
-                                      "<td><input type='checkbox' id='Resubasta'"+ i +" > </td>"+
-                                  "</tr>";
-                              }
-                            }
-            $('#ventas').html(salida);
-        });
-    });
 
     function validarDatos(){
 
@@ -233,7 +176,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     $("#compradores").change(function () {
         var codigoComprador = $("#compradores").val();
         if(codigoComprador != '-1'){
-            $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
+          $.post("../business/subastabusiness/subastaAction.php",{'FacturaComprador': codigoComprador}, function(data){
               var comprador = JSON.parse(data);
              salida = "<table class='table'>\n"+
                                   "<thead>\n"+
@@ -282,9 +225,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     "</tr>";
                                 }
                               }
+              $('#ventas').show();     
               $('#ventas').html(salida);
           });
         }else{
+          $('#compradorNumeroIdentificacion').val("");
+          $('#compradorNombreCompleto').val("");
           $('#ventas').hide();
         }
     });
@@ -349,12 +295,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 function cancelarResubasta(id){
   $.post("../business/subastabusiness/subastaAction.php",{'Eliminar': id,'tabla': 'resubasta'}, function(data){
-    alert(data);
   });
 }//cancelarResubastas
 function cancelarVenta(id){
   $.post("../business/subastabusiness/subastaAction.php",{'Eliminar': id,'tabla': 'venta'}, function(data){
-  alert(data);
   });
 }//cancelarVenta
 

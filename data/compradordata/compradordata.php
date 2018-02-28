@@ -8,11 +8,11 @@ que se toma la ruta desde el view
 if (isset($_POST['eliminar']) || isset($_POST['actualizar']) || isset($_POST['insertar']) ||
 isset($_POST['eliminarTelefono']) || isset($_POST['agregarTelefono']) || isset($_POST['obtener']) ||
 isset($_POST['buscar']) || isset($_POST['obtenerCompradores']) || isset($_POST['informacionComprador'])) {
-	include_once '../../data/data.php';
-	include '../../domain/comprador/comprador.php';
+    include_once '../../data/data.php';
+    include '../../domain/comprador/comprador.php';
 }else {
-	include_once '../data/data.php';
-	include '../domain/comprador/comprador.php';
+    include_once '../data/data.php';
+    include '../domain/comprador/comprador.php';
 }
 //codi,cedula,nmombrem,tele,direc,recom,pago
 
@@ -73,11 +73,11 @@ class CompradorData extends Data {
         $conn->set_charset('utf8');
 
         $queryUpdate = "UPDATE tbcomprador SET compradornumeroidentificacion = ". "'".$comprador->getCompradorCedula()."'".",".
-				" compradornombrecompleto = " . "'".$comprador->getCompradorNombreCompleto() ."'".
+                " compradornombrecompleto = " . "'".$comprador->getCompradorNombreCompleto() ."'".
                 ", compradortelefono = " ."'".$comprador->getCompradorTelefono() ."'".
-				", compradordireccion = " ."'".$comprador->getCompradorDireccion() ."'".
-				", compradorrecomendador = " ."'".$comprador->getCompradorRecomendacion() ."'".
-				", compradortipopago = " ."'".$comprador->getCompradorPago() ."'".
+                ", compradordireccion = " ."'".$comprador->getCompradorDireccion() ."'".
+                ", compradorrecomendador = " ."'".$comprador->getCompradorRecomendacion() ."'".
+                ", compradortipopago = " ."'".$comprador->getCompradorPago() ."'".
                 ", compradornumeropagare = " .$comprador->getCompradorNumeroPagare().
                 " WHERE compradorcodigo = " . $comprador->getCompradorCodigo() . ";";
 
@@ -101,8 +101,8 @@ class CompradorData extends Data {
         while ($row = mysqli_fetch_array($result)) {
 
                  $comprador = new comprador($row['compradorcodigo'], $row['compradornumeroidentificacion'],
-								 $row['compradornombrecompleto'],$row['compradortelefono'],$row['compradordireccion']
-							 ,$row['compradorrecomendador'],$row['compradortipopago'] ,$row['compradornumeropagare']);
+                                 $row['compradornombrecompleto'],$row['compradortelefono'],$row['compradordireccion']
+                             ,$row['compradorrecomendador'],$row['compradortipopago'] ,$row['compradornumeropagare']);
                 array_push($compradores, $comprador);
 
         }//end while
@@ -116,15 +116,15 @@ class CompradorData extends Data {
         $conn->set_charset('utf8');
 
 
-		$querySelectVenta = "SELECT DISTINCT tbcomprador.compradorcodigo, tbcomprador.compradornombrecompleto FROM tbcomprador,tbventa WHERE(
-        (tbcomprador.compradorcodigo = tbventa.ventacomprador));";
+        $querySelectVenta = "SELECT DISTINCT tbcomprador.compradorcodigo, tbcomprador.compradornombrecompleto FROM tbcomprador,tbventa WHERE(
+        (tbcomprador.compradorcodigo = tbventa.ventacomprador) AND (tbventa.ventaestado <> 'B' AND tbventa.ventaestado <> 'C'));";
 
-		$querySelectResubasta = "SELECT DISTINCT tbcomprador.compradorcodigo, tbcomprador.compradornombrecompleto FROM tbcomprador,tbresubasta WHERE(
-		(tbresubasta.resubastacomprador=tbcomprador.compradorcodigo));";
+        $querySelectResubasta = "SELECT DISTINCT tbcomprador.compradorcodigo, tbcomprador.compradornombrecompleto FROM tbcomprador,tbresubasta WHERE(
+        (tbresubasta.resubastacomprador=tbcomprador.compradorcodigo) AND (tbresubasta.resubastaestado <> 'B' AND tbresubasta.resubastaestado <> 'C'));";
 
         $resultVenta = mysqli_query($conn, $querySelectVenta);
 
-		$resultResubasta = mysqli_query($conn, $querySelectResubasta);
+        $resultResubasta = mysqli_query($conn, $querySelectResubasta);
         mysqli_close($conn);
 
         $compradores = [];
@@ -137,58 +137,58 @@ class CompradorData extends Data {
 
         }//end while
 
-		while ($row = mysqli_fetch_array($resultVenta)) {
-			$flag = false;
+        while ($row = mysqli_fetch_array($resultVenta)) {
+            $flag = false;
 
-			foreach ($compradores as $actual) {
-				if ($actual->getCompradorCodigo() == $row['compradorcodigo']) {
-					$flag = true;
-				}
-			}//foreach
+            foreach ($compradores as $actual) {
+                if ($actual->getCompradorCodigo() == $row['compradorcodigo']) {
+                    $flag = true;
+                }
+            }//foreach
 
-			if ($flag == false) {
-				$comprador = new comprador($row['compradorcodigo'], 0,
-				$row['compradornombrecompleto'],0, 0,0,0,0);
+            if ($flag == false) {
+                $comprador = new comprador($row['compradorcodigo'], 0,
+                $row['compradornombrecompleto'],0, 0,0,0,0);
 
-				array_push($compradores, $comprador);
-			}
-		}
+                array_push($compradores, $comprador);
+            }
+        }
 
         return $compradores;
     }//obtenerMedicos
 
 
-	public function obtenerCompradoresJSON(){
-		$conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+    public function obtenerCompradoresJSON(){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
         $querySelect = "SELECT compradornombrecompleto, compradorcodigo, compradornumeroidentificacion,
-		compradortelefono, compradordireccion, compradorrecomendador FROM tbcomprador;";
+        compradortelefono, compradordireccion, compradorrecomendador FROM tbcomprador;";
         $result = mysqli_query($conn, $querySelect);
         mysqli_close($conn);
 
         while ($row = mysqli_fetch_array($result)) {
-			$compradores["Data"][] = $row;
+            $compradores["Data"][] = $row;
         }//end while
 
-		echo json_encode($compradores);
-	}
+        echo json_encode($compradores);
+    }
 
-	public function obtenerCompradorPorIdConJSON($compradorcodigo){
-		$conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+    public function obtenerCompradorPorIdConJSON($compradorcodigo){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
         $querySelect = "SELECT compradornombrecompleto, compradorcodigo, compradornumeroidentificacion,
-		compradortelefono, compradordireccion, compradorrecomendador, compradortipopago, compradornumeropagare FROM tbcomprador WHERE compradorcodigo = ". $compradorcodigo .";";
+        compradortelefono, compradordireccion, compradorrecomendador, compradortipopago, compradornumeropagare FROM tbcomprador WHERE compradorcodigo = ". $compradorcodigo .";";
         $result = mysqli_query($conn, $querySelect);
         mysqli_close($conn);
 
         while ($row = mysqli_fetch_array($result)) {
-			$compradores["Data"][] = $row;
+            $compradores["Data"][] = $row;
         }//end while
 
-		echo json_encode($compradores);
-	}
+        echo json_encode($compradores);
+    }
 
 }//end class
 
