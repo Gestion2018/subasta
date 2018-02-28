@@ -43,7 +43,7 @@ class AnimalData extends Data {
             .$animal->getAnimalRaza().", " .
             "'".$animal->getAnimalDescripcion() ."'". ", " .
             "'subasta',".
-            "'".$this->obtenerInfoTermninal()."'". ");";
+            "'".$this->obtenerInfoCliente()."'". ");";
 
             $result = mysqli_query($conn, $queryInsert);
             mysqli_close($conn);
@@ -272,7 +272,7 @@ class AnimalData extends Data {
        $conn->set_charset('utf8');
 
        $querySelect = "SELECT animal.animalnumero, animal.animaldonador,
-       tipoAnimal.tipoanimalnombre FROM tbanimal As animal
+       tipoAnimal.tipoanimalnombre, animal.animalusuario FROM tbanimal As animal
        INNER JOIN tbtipoanimal AS tipoAnimal ON animal.animaltipo = tipoAnimal.tipoanimalid ORDER BY animal.animalnumero LIMIT 4";
 
        //SELECT * FROM tabla ORDER BY id DESC LIMIT 5
@@ -296,10 +296,10 @@ class AnimalData extends Data {
 
    }//obteneranimales
 
-   public function obtenerInfoTermninal () {
+   public function obtenerInfoCliente () {
         //return $_SERVER['REMOTE_ADDR'];
-        //return gethostname();
-        return "";
+        return gethostname();
+        //return "";
     }//obtenerInfoTermninal
 
 }//end class

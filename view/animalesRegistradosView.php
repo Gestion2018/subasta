@@ -126,6 +126,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             "<th>Número del animal</th>"+
                             "<th>Donador</th>"+
                             "<th>Tipo animal</th>"+
+                            "<th>Usuario</th>"+
                         "</tr>"+
                     "</thead>"+
                 "<tbody>";
@@ -135,6 +136,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         "<td>" + animales.Data[i].animalnumero + "</td>"+
                         "<td>" + animales.Data[i].animaldonador + "</td>"+
                         "<td>" + animales.Data[i].tipoanimalnombre + "</td>"+
+                        "<td>" + animales.Data[i].animalusuario + "</td>"+
                     "</tr>";
                 }
 
