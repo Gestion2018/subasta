@@ -39,7 +39,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <h1><a href="../index.html">Inicio</a></h1>
                 </div>
                 <div class="logo">
-                    <h1><label id="paddingVentas">Ventas: ¢ 0</label></h1>
+                    <h2><label id="paddingVentas">Ventas: ¢ 0</label></h2>
                 </div>
          <div class="clearfix"> </div>
       </div>
